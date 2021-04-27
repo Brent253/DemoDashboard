@@ -52,9 +52,17 @@
         </div>
       </v-container>
     </v-app-bar>
+    <v-snackbar v-model="snackbar" :color="color" top>
+      {{ text }}
 
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-main>
-      <router-view />
+      <router-view @signedIn="notify" />
       <v-footer color="blue-grey lighten-1" fixed>
         <v-col class="text-center" cols="12">
           {{ new Date().getFullYear() }} — <strong>Demo Dashboard</strong>
@@ -74,14 +82,20 @@ export default {
     menu: false,
     message: false,
     hints: true,
+
+    snackbar: false,
+    text: "",
+    color: "info",
   }),
 
   methods: {
     logout() {
       axios
         .post("https://hiring-example-25770.botics.co/rest-auth/logout/")
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          this.snackbar = true;
+          this.text = "You are now signed out.";
+
           localStorage.removeItem("ApiKey");
           this.menu = false;
           this.$router.push({
@@ -96,6 +110,13 @@ export default {
       else if (item == "Messages") console.log("View Messages");
       else if (item == "Profile") console.log("View Profile");
       else if (item == "Logout") this.logout();
+    },
+
+    notify(message) {
+      if (message == "signedIn") {
+        this.text = "You have successfully signed in!";
+        this.snackbar = true;
+      }
     },
   },
 };

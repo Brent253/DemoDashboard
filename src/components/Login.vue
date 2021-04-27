@@ -22,14 +22,6 @@
                 type="password"
                 required
               ></v-text-field>
-              <!-- 
-          <v-checkbox
-            v-model="checkbox"
-            :rules="[(v) => !!v || 'You must agree to continue!']"
-            label="Do you agree?"
-            required
-          ></v-checkbox> -->
-
               <v-btn
                 :disabled="!valid"
                 color="success"
@@ -43,14 +35,6 @@
               </router-link>
             </v-col>
           </v-row>
-
-          <!-- <v-btn color="error" class="mr-4" @click="reset">
-            Reset Form
-          </v-btn>
-
-          <v-btn color="warning" @click="resetValidation">
-            Reset Validation
-          </v-btn> -->
           <v-row>
             <v-col>
               Don't have an account?
@@ -84,19 +68,14 @@ export default {
       (v) =>
         (v && v.length <= 10) || "Password must be less than 10 characters",
     ],
-
-    // checkbox: false,
   }),
-
-  // created() {
-  //   axios.get();
-  // },
 
   methods: {
     validate() {
       this.$refs.form.validate();
 
       if (this.valid === true) {
+        this.$emit("signedIn", "signedIn");
         this.login();
       }
     },
@@ -115,6 +94,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          console.log("Successfuly logged in");
           localStorage.setItem("ApiKey", res.data.key);
           this.$router.push({
             name: "Dashboard",

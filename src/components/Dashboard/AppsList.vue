@@ -100,20 +100,6 @@
       </div>
     </v-container>
 
-    <v-snackbar v-model="snackbar" :color="color" top>
-      {{ text }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-
-    <v-overlay :value="overlay">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-overlay>
-
     <v-row justify="center">
       <v-col cols="auto">
         <v-dialog
@@ -140,14 +126,25 @@
                   />
                 </v-container>
               </v-card-text>
-              <!-- <v-card-actions class="justify-end">
-                <v-btn text @click="closeSubscription">Close</v-btn>
-              </v-card-actions> -->
             </v-card>
           </template>
         </v-dialog>
       </v-col>
     </v-row>
+
+    <v-snackbar v-model="snackbar" :color="color" top>
+      {{ text }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 

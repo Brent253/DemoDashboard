@@ -10,6 +10,10 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   routes: [
+    // {
+    //   path: "*",
+    //   redirect: "/",
+    // },
     {
       path: "/",
       name: "Login",
@@ -34,18 +38,23 @@ const router = new VueRouter({
       path: "/dashboard",
       name: "Dashboard",
       component: Dashboard,
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });
 
-// router.beforeEach((to,from, next) => {
-
-//   if (
-//     !localStorage.getItem("currentUser") &&
-//     !localStorage.getItem("currentPass")
-//   ) {
-//     next('/Login')
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  // ...
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const user = localStorage.getItem("ApiKey");
+  if (requiresAuth && !user) {
+    //redirect to login
+    next("/");
+  } else {
+    next();
+  }
+});
 
 export default router;

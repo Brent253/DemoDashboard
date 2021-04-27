@@ -101,11 +101,6 @@ export default {
       (v) =>
         (v && v.length <= 10) || "Password must be less than 10 characters",
     ],
-    // repeatPasswordRules: [
-    //   (v) => !!v || "Password is required",
-    //   (v) =>
-    //     (v && v.length <= 10) || "Password must be less than 10 characters",
-    // ],
     checkbox: false,
   }),
 
