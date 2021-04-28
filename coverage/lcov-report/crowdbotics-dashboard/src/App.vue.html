@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
@@ -209,7 +209,12 @@
 <a name='L150'></a><a href='#L150'>150</a>
 <a name='L151'></a><a href='#L151'>151</a>
 <a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -304,8 +309,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -337,22 +340,29 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -447,19 +457,17 @@ export default {
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  data: () =&gt; ({</span></span>
     toolbar: ["Dashboard", "Messages", "Profile", "Logout"],
     menu: false,
-    message: false,
-    hints: true,
 &nbsp;
     snackbar: false,
     text: "",
     color: "info",
-    timeout: 3000,
+    timeout: 1000,
   }),
 &nbsp;
   methods: {
 <span class="fstat-no" title="function not covered" >    logout() {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      axios</span></span>
-        .post("https://hiring-example-25770.botics.co/rest-auth/logout/")
+        .post(`${process.env.VUE_APP_LOGOUT}`)
         .then(() =&gt; {
 <span class="cstat-no" title="statement not covered" >          this.notify("logout");</span>
 &nbsp;
@@ -487,24 +495,31 @@ export default {
         case "signedIn":
           // code block
 <span class="cstat-no" title="statement not covered" >          this.text = "You have successfully signed in!";</span>
+<span class="cstat-no" title="statement not covered" >          this.color = "success";</span>
 <span class="cstat-no" title="statement not covered" >          this.snackbar = true;</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
         case "registered":
           // code block
 <span class="cstat-no" title="statement not covered" >          this.text =</span>
             "Your account has been successfully registered! Taking you to the dashboard..";
+<span class="cstat-no" title="statement not covered" >          this.color = "success";</span>
 <span class="cstat-no" title="statement not covered" >          this.snackbar = true;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >          break;</span>
         case "passwordReset":
           // code block
 <span class="cstat-no" title="statement not covered" >          this.text = "Your email has been sent a Password Reset Link.";</span>
+<span class="cstat-no" title="statement not covered" >          this.color = "success";</span>
 <span class="cstat-no" title="statement not covered" >          this.snackbar = true;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >          break;</span>
 &nbsp;
         case "logout":
           //codeblock
-<span class="cstat-no" title="statement not covered" >          this.snackbar = true;</span>
 <span class="cstat-no" title="statement not covered" >          this.text = "You are now signed out.";</span>
+<span class="cstat-no" title="statement not covered" >          this.color = "info";</span>
+<span class="cstat-no" title="statement not covered" >          this.snackbar = true;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >          break;</span>
         default:
         // code block
@@ -520,7 +535,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Apr 27 2021 23:25:05 GMT-0700 (Pacific Daylight Time)
+                at Wed Apr 28 2021 11:28:39 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

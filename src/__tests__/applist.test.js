@@ -9,7 +9,7 @@ describe("AppsList.vue", () => {
   it("mocking the axios call to get apps list should work", () => {
     var wrapper = shallowMount(AppsList);
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.vm.applist.length).toBe(1);
+      expect(wrapper.vm.applist.length).toBeGreaterThan(0);
     });
   });
 });
