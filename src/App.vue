@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="blue-grey lighten-1">
-      <v-icon> mdi-brush </v-icon>
+      <v-icon> mdi-robot </v-icon>
       <v-container class="py-0 fill-height">
         <v-spacer></v-spacer>
 
@@ -52,7 +52,7 @@
         </div>
       </v-container>
     </v-app-bar>
-    <v-snackbar v-model="snackbar" :color="color" top>
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" top>
       {{ text }}
 
       <template v-slot:action="{ attrs }">
@@ -62,7 +62,11 @@
       </template>
     </v-snackbar>
     <v-main>
-      <router-view @signedIn="notify" />
+      <router-view
+        @signedIn="notify"
+        @passwordReset="notify"
+        @registered="notify"
+      />
       <v-footer color="blue-grey lighten-1" fixed>
         <v-col class="text-center" cols="12">
           {{ new Date().getFullYear() }} — <strong>Demo Dashboard</strong>
@@ -86,18 +90,21 @@ export default {
     snackbar: false,
     text: "",
     color: "info",
+    timeout: 3000,
   }),
 
   methods: {
     logout() {
       axios
-        .post("https://hiring-example-25770.botics.co/rest-auth/logout/")
+        .post(`${process.env.VUE_APP_LOGOUT}`)
         .then(() => {
-          this.snackbar = true;
-          this.text = "You are now signed out.";
+          this.notify("logout");
 
+          //Auth cleanup and logout menu
           localStorage.removeItem("ApiKey");
           this.menu = false;
+
+          //Redirect to homepage
           this.$router.push({
             name: "Login",
           });
@@ -113,9 +120,31 @@ export default {
     },
 
     notify(message) {
-      if (message == "signedIn") {
-        this.text = "You have successfully signed in!";
-        this.snackbar = true;
+      switch (message) {
+        case "signedIn":
+          // code block
+          this.text = "You have successfully signed in!";
+          this.snackbar = true;
+          break;
+        case "registered":
+          // code block
+          this.text =
+            "Your account has been successfully registered! Taking you to the dashboard..";
+          this.snackbar = true;
+          break;
+        case "passwordReset":
+          // code block
+          this.text = "Your email has been sent a Password Reset Link.";
+          this.snackbar = true;
+          break;
+
+        case "logout":
+          //codeblock
+          this.snackbar = true;
+          this.text = "You are now signed out.";
+          break;
+        default:
+        // code block
       }
     },
   },

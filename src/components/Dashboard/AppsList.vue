@@ -132,7 +132,7 @@
       </v-col>
     </v-row>
 
-    <v-snackbar v-model="snackbar" :color="color" top>
+    <v-snackbar v-model="snackbar" :color="color" :timeout="timeout" top>
       {{ text }}
 
       <template v-slot:action="{ attrs }">
@@ -155,11 +155,12 @@ export default {
   name: "Login",
 
   data: () => ({
-    //notifications
+    //Notifications
     snackbar: false,
     text: "",
-    vertical: true,
     color: "success",
+    timeout: 3000,
+
     plans: [],
     currentPlan: null,
     //overlay
@@ -269,7 +270,6 @@ export default {
     },
   },
 
-  //When component is rendered, checks for auth in storage
   created() {
     this.initialize();
   },
@@ -332,6 +332,7 @@ export default {
       } else {
         this.overlay = true;
 
+        //Add
         this.applist.push(this.editedItem);
 
         this.addAppList();
@@ -342,7 +343,7 @@ export default {
     getAppList() {
       axios
         .request({
-          url: "https://hiring-example-25770.botics.co/api/v1/apps/",
+          url: `${process.env.VUE_APP_APPLIST}`,
           method: "get",
           // data: reqData,
           headers: {
@@ -363,16 +364,14 @@ export default {
         })
         .catch((err) => {
           console.log(err.response);
-          this.text = "An error has occured retrieving applist.";
-          this.color = "error";
-          this.snackbar = true;
+          this.notify("error");
         });
     },
 
     addAppList() {
       axios
         .request({
-          url: `https://hiring-example-25770.botics.co/api/v1/apps/`,
+          url: `${process.env.VUE_APP_APPLIST}`,
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -391,22 +390,18 @@ export default {
           this.overlay = false;
           console.log(res);
 
-          this.text = "Successfully added a new App!";
-          this.color = "success";
-          this.snackbar = true;
+          this.notify("add");
         })
         .catch((err) => {
           console.log(err.response);
-          this.text = "An error has occured adding or updating the App.";
-          this.color = "error";
-          this.snackbar = true;
+          this.notify("error");
         });
     },
 
     updateAppList(id) {
       axios
         .request({
-          url: `https://hiring-example-25770.botics.co/api/v1/apps/${id}`,
+          url: `${process.env.VUE_APP_APPLIST}${id}`,
           method: "put",
           headers: {
             Authorization: `Token ${localStorage.getItem("ApiKey")}`,
@@ -423,30 +418,24 @@ export default {
         .then((res) => {
           this.overlay = false;
           console.log(res);
-          this.text = "Successfully added a new App!";
-          this.color = "success";
-          this.snackbar = true;
+          this.notify("update");
         })
         .catch((err) => {
           console.log(err.response);
-          this.text = "An error has occured adding or updating the App.";
-          this.color = "error";
-          this.snackbar = true;
+          this.notify("error");
         });
     },
 
     updatePlan(item) {
-      // console.log(item);
       this.currentPlan = item;
       this.subscriptionDialog = true;
       console.log(this.currentPlan);
-      // this.$emit("updateDialog", item); //Triggers dialog on dashboard as it's the parent
     },
 
     deleteAppList(id) {
       axios
         .request({
-          url: `https://hiring-example-25770.botics.co/api/v1/apps/${id}`,
+          url: `${process.env.VUE_APP_APPLIST}${id}`,
           method: "delete",
           headers: {
             "Content-Type": "application/json",
@@ -456,22 +445,19 @@ export default {
         .then((res) => {
           this.overlay = false;
           console.log(res);
-          this.text = "App deleted!";
-          this.color = "success";
-          this.snackbar = true;
+
+          this.notify("delete");
         })
         .catch((err) => {
           console.log(err.response);
-          this.text = "An error has occured adding or updating the App.";
-          this.color = "error";
-          this.snackbar = true;
+          this.notify("error");
         });
     },
 
     getPlans() {
       axios
         .request({
-          url: `https://hiring-example-25770.botics.co/api/v1/plans/`,
+          url: `${process.env.VUE_APP_PLANS}`,
           method: "get",
           headers: {
             "Content-Type": "application/json",
@@ -479,10 +465,40 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
           this.plans = res.data;
         })
         .catch((err) => console.log(err.response));
+    },
+
+    notify(message) {
+      switch (message) {
+        case "add":
+          // code block
+          this.text = "Successfully added a new App!";
+          this.snackbar = true;
+          break;
+        case "update":
+          // code block
+          this.text = "App successfully updated!";
+          this.color = "success";
+          this.snackbar = true;
+          break;
+
+        case "delete":
+          //codeblock
+          this.text = "Your app has been deleted.";
+          this.color = "success";
+          this.snackbar = true;
+          break;
+        case "error":
+          this.text = "An error has occured updating the app";
+          this.color = "error";
+          this.snackbar = true;
+          break;
+
+        default:
+        // code block
+      }
     },
   },
 };

@@ -72,12 +72,10 @@ export default {
 
   methods: {
     initialize() {
-      console.log(localStorage.getItem("ApiKey"));
       this.getUser();
     },
 
     upgradePlans(plan) {
-      console.log(plan);
       this.currentPlan = plan;
       this.dialog = true;
     },
@@ -91,7 +89,7 @@ export default {
     getUser() {
       axios
         .request({
-          url: `https://hiring-example-25770.botics.co/rest-auth/user/`,
+          url: `${process.env.VUE_APP_USER}`,
           method: "get",
           headers: {
             "Content-Type": "application/json",
@@ -100,8 +98,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log("User");
-          console.log(res.data);
           this.selectPlan = res.data.plan;
         })
         .catch((err) => {

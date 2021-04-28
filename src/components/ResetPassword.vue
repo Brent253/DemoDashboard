@@ -78,6 +78,8 @@ export default {
         .then((res) => {
           console.log(res);
 
+          this.$emit("passwordReset", "passwordReset");
+
           this.$router.push({
             name: "Login",
           });

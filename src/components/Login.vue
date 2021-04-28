@@ -88,7 +88,7 @@ export default {
 
     login() {
       axios
-        .post("https://hiring-example-25770.botics.co/rest-auth/login/", {
+        .post(`${process.env.VUE_APP_LOGIN}`, {
           email: this.email,
           password: this.password,
         })

@@ -134,7 +134,7 @@ export default {
       if (subscription == null || subscription == "") {
         axios
           .request({
-            url: `https://hiring-example-25770.botics.co/api/v1/subscriptions/`,
+            url: `${process.env.VUE_APP_SUBSCRIPTIONS}`,
             method: "post",
             headers: {
               "Content-Type": "application/json",
@@ -163,7 +163,7 @@ export default {
           console.log("Attempting to update subscription.");
           axios
             .request({
-              url: `https://hiring-example-25770.botics.co/api/v1/subscriptions/${subscription}`,
+              url: `${process.env.VUE_APP_SUBSCRIPTIONS}${subscription}`,
               method: "put",
               headers: {
                 "Content-Type": "application/json",
@@ -201,7 +201,7 @@ export default {
       } else if (subscription) {
         axios
           .request({
-            url: `https://hiring-example-25770.botics.co/api/v1/subscriptions/${this.subscription}`,
+            url: `${process.env.VUE_APP_SUBSCRIPTIONS}${this.subscription}`,
             method: "get",
             headers: {
               "Content-Type": "application/json",

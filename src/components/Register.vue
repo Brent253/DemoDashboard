@@ -29,13 +29,6 @@
                 type="password"
                 required
               ></v-text-field>
-              <!-- <v-text-field
-                v-model="repeatPassword"
-                :rules="repeatPasswordRules"
-                label="Repeat Password*"
-                type="password"
-                required
-              ></v-text-field> -->
 
               <v-checkbox
                 v-model="checkbox"
@@ -54,14 +47,6 @@
               </v-btn>
             </v-col>
           </v-row>
-
-          <!-- <v-btn color="error" class="mr-4" @click="reset">
-            Reset Form
-          </v-btn>
-
-          <v-btn color="warning" @click="resetValidation">
-            Reset Validation
-          </v-btn> -->
           <v-row>
             <v-col>
               Already have an account?
@@ -104,13 +89,12 @@ export default {
     checkbox: false,
   }),
 
-  created() {},
-
   methods: {
     validate() {
       this.$refs.form.validate();
 
       if (this.valid === true) {
+        this.$emit("registered", "registered");
         this.registerUser();
       }
     },
@@ -123,15 +107,18 @@ export default {
 
     registerUser() {
       axios
-        .post(
-          "https://hiring-example-25770.botics.co/rest-auth/registration/",
-          {
-            name: this.name,
-            email: this.email,
-            password: this.password,
-          }
-        )
-        .then((res) => console.log(res))
+        .post(`${process.env.VUE_APP_REGISTRATION}`, {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+        })
+        .then((res) => {
+          console.log(res);
+          localStorage.setItem("ApiKey", res.data.key);
+          this.$router.push({
+            name: "Dashboard",
+          });
+        })
         .catch((err) => console.log(err.response));
     },
   },
