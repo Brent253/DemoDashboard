@@ -86,6 +86,10 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
   </div>
 </template>
 
@@ -97,11 +101,12 @@ export default {
     return {
       e1: 1,
       selectPlan: null,
+
+      /*Subscription id plan and price */
       planName: null,
       planPrice: null,
-      card: "",
       subscription: null,
-      plan: null,
+      overlay: false,
     };
   },
 
@@ -129,8 +134,9 @@ export default {
   },
 
   methods: {
+    /*Adds or Updates a subscription.*/
     addUpdateSubscription(subscription) {
-      //Add new subscription
+      this.overlay = true;
       if (subscription == null || subscription == "") {
         axios
           .request({
@@ -148,9 +154,8 @@ export default {
             },
           })
           .then((res) => {
-            this.$emit("closeConfirm");
-            this.selectPlan = null;
-
+            this.close(); //reset steps
+            this.$emit("subscribed", "subscribed");
             this.overlay = false;
             console.log(res);
           })
@@ -177,10 +182,9 @@ export default {
               },
             })
             .then((res) => {
-              this.el = 1; //Reset steps
-              this.$emit("closeConfirm");
-              this.selectPlan = null;
-
+              this.close(); //reset steps
+              // this.selectPlan = null;
+              this.$emit("subscribed", "subscribed");
               console.log(res);
             })
             .catch((err) => {
@@ -191,12 +195,13 @@ export default {
       }
     },
 
+    /*Gets the current subscription based on the id passed*/
     getSubscriptions(subscription) {
+      //Preselect the plan based on the subscription. If no plan, default is set to 'Free'
       this.selectPlan = null;
 
       if (subscription == null || subscription == "") {
         console.log("No active subscription for this app");
-
         this.selectPlan = this.plans[0].id;
       } else if (subscription) {
         axios
@@ -210,11 +215,11 @@ export default {
             },
           })
           .then((res) => {
-            console.log("Current App Subscription");
             console.log(res.data);
 
-            this.selectPlan = res.data.plan; // check if this matches subscription
+            this.selectPlan = res.data.plan; //Assign the preselect only after saving
 
+            //Gets the Plan and Name given the selected id matches the plan id
             for (let plan in this.plans) {
               if (this.selectPlan == this.plans[plan].id)
                 this.planName = this.plans[plan].name;
@@ -227,14 +232,18 @@ export default {
       }
     },
 
+    /**Radio operations that changes the plan id, name, and price */
     changePlan(planID, planName, planPrice) {
       this.selectPlan = planID;
       this.planName = planName;
       this.planPrice = planPrice;
     },
 
+    /*Closes Plan Subscription screen and resets the instance.*/
     close() {
+      this.subscription = this.currentPlan.subscription; //Subscription id
       this.$emit("closeConfirm");
+
       this.e1 = 1;
     },
   },

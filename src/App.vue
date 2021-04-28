@@ -84,13 +84,11 @@ export default {
   data: () => ({
     toolbar: ["Dashboard", "Messages", "Profile", "Logout"],
     menu: false,
-    message: false,
-    hints: true,
 
     snackbar: false,
     text: "",
     color: "info",
-    timeout: 3000,
+    timeout: 1000,
   }),
 
   methods: {
@@ -124,24 +122,31 @@ export default {
         case "signedIn":
           // code block
           this.text = "You have successfully signed in!";
+          this.color = "success";
           this.snackbar = true;
           break;
         case "registered":
           // code block
           this.text =
             "Your account has been successfully registered! Taking you to the dashboard..";
+          this.color = "success";
           this.snackbar = true;
+
           break;
         case "passwordReset":
           // code block
           this.text = "Your email has been sent a Password Reset Link.";
+          this.color = "success";
           this.snackbar = true;
+
           break;
 
         case "logout":
           //codeblock
-          this.snackbar = true;
           this.text = "You are now signed out.";
+          this.color = "info";
+          this.snackbar = true;
+
           break;
         default:
         // code block

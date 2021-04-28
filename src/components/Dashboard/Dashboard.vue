@@ -3,7 +3,7 @@
     <v-main class="blue-grey lighten-4">
       <v-container>
         <v-row>
-          <v-col cols="2">
+          <!-- <v-col cols="2">
             <v-sheet rounded="lg" color="grey lighten-4">
               <v-list color="transparent">
                 <v-list-item link color="grey lighten-4">
@@ -27,7 +27,7 @@
                 </v-list-item>
               </v-list>
             </v-sheet>
-          </v-col>
+          </v-col> -->
 
           <v-col>
             <v-sheet min-height="81vh" rounded="lg" color="grey lighten-4">
@@ -50,16 +50,15 @@ export default {
   name: "Dashboard",
   data: () => ({
     plans: [],
-    links: ["Dashboard", "Messages", "Profile", "Updates"],
-    toolbar: ["Dashboard", "Messages", "Profile", "Change Plan"],
-    email: "",
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    token: null,
-    dialog: false,
-    row: null,
+    toolbar: ["Dashboard", "Messages", "Profile", "Change Plan"], //Dropdown
+
+    /*EmailVerify*/
+    // email: "",
+    // emailRules: [
+    //   (v) => !!v || "E-mail is required",
+    //   (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    // ],
+
     currentPlan: null,
   }),
   components: {
@@ -77,15 +76,9 @@ export default {
 
     upgradePlans(plan) {
       this.currentPlan = plan;
-      this.dialog = true;
     },
 
-    menuAction(item) {
-      if (item == "Change Plan") this.dialog = true;
-      if (item == "StoryBoard") console.log("Storyboard");
-      if (item == "Status") console.log("Status");
-    },
-
+    /*Get User auth*/
     getUser() {
       axios
         .request({
@@ -105,23 +98,23 @@ export default {
         });
     },
 
-    verifyEmail() {
-      axios
-        .post(
-          "https://hiring-example-25770.botics.co/rest-auth/registration/verify-email/",
-          {
-            key: localStorage.getItem("ApiKey"),
-          }
-        )
-        .then((res) => {
-          console.log(res);
+    // verifyEmail() {
+    //   axios
+    //     .post(
+    //       "https://hiring-example-25770.botics.co/rest-auth/registration/verify-email/",
+    //       {
+    //         key: localStorage.getItem("ApiKey"),
+    //       }
+    //     )
+    //     .then((res) => {
+    //       console.log(res);
 
-          this.$router.push({
-            name: "Login",
-          });
-        })
-        .catch((err) => console.log(err.response));
-    },
+    //       this.$router.push({
+    //         name: "Login",
+    //       });
+    //     })
+    //     .catch((err) => console.log(err.response));
+    // },
   },
 };
 </script>

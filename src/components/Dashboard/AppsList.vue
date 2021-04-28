@@ -123,6 +123,7 @@
                     :plans="plans"
                     :currentPlan="currentPlan"
                     @closeConfirm="closeSubscription"
+                    @subscribed="notify"
                   />
                 </v-container>
               </v-card-text>
@@ -326,16 +327,25 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.applist[this.editedIndex], this.editedItem);
-        this.overlay = true;
-        this.updateAppList(this.editedItem.id);
+        //Basic field validation
+        if (this.editedItem.name != "" && this.editedItem.description != "") {
+          Object.assign(this.applist[this.editedIndex], this.editedItem);
+          this.overlay = true;
+          this.updateAppList(this.editedItem.id);
+        } else {
+          this.notify("invalid");
+        }
       } else {
-        this.overlay = true;
+        //Basic field validation
+        if (this.editedItem.name != "" && this.editedItem.description != "") {
+          this.overlay = true;
 
-        //Add
-        this.applist.push(this.editedItem);
+          this.applist.push(this.editedItem);
 
-        this.addAppList();
+          this.addAppList();
+        } else {
+          this.notify("invalid");
+        }
       }
       this.close();
     },
@@ -387,6 +397,11 @@ export default {
           },
         })
         .then((res) => {
+          //We need to refetch the table to get the valid subscription without reloading.
+          this.applist = [];
+          this.plans = [];
+          this.initialize();
+
           this.overlay = false;
           console.log(res);
 
@@ -428,6 +443,7 @@ export default {
 
     updatePlan(item) {
       this.currentPlan = item;
+
       this.subscriptionDialog = true;
       console.log(this.currentPlan);
     },
@@ -476,6 +492,7 @@ export default {
           // code block
           this.text = "Successfully added a new App!";
           this.snackbar = true;
+          this.color = "success";
           break;
         case "update":
           // code block
@@ -490,12 +507,24 @@ export default {
           this.color = "success";
           this.snackbar = true;
           break;
+        case "subscribed":
+          // code block
+          this.text = "Your subscription has been updated!";
+          this.snackbar = true;
+          this.color = "success";
+          break;
         case "error":
+          //error on http request
           this.text = "An error has occured updating the app";
           this.color = "error";
           this.snackbar = true;
           break;
-
+        case "invalid":
+          this.text =
+            "An error has occured. Please enter a valid name and description";
+          this.color = "error";
+          this.snackbar = true;
+          break;
         default:
         // code block
       }
